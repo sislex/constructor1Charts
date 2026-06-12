@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@components/dumb/common/Button';
 import { QuoteSourceSelector } from '@components/dumb/sources/QuoteSourceSelector';
-import type { QuoteSource } from '@domainTypes/domain';
+import type { QuoteSource, WeightedAverageConfig } from '@domainTypes/domain';
 import { ProfitCurrencyField } from './ProfitCurrencyField';
 import { TradingMarketSelector } from './TradingMarketSelector';
+import { WeightedAveragePanel } from './WeightedAveragePanel';
 import './ConfigurationFormShell.css';
 
 export interface ConfigurationFormShellProps {
@@ -14,9 +15,14 @@ export interface ConfigurationFormShellProps {
   quoteSourcesError: string | null;
   tradingMarket: string;
   profitCurrency: string;
+  weightedAverage: WeightedAverageConfig;
+  latestValues: Record<string, number>;
+  exportedJson: string;
   onNameChange: (name: string) => void;
   onSourcesChange: (sources: string[]) => void;
   onTradingMarketChange: (market: string) => void;
+  onWeightedAverageChange: (weightedAverage: WeightedAverageConfig) => void;
+  onExportJson: () => void;
 }
 
 export function ConfigurationFormShell({
@@ -27,9 +33,14 @@ export function ConfigurationFormShell({
   quoteSourcesError,
   tradingMarket,
   profitCurrency,
+  weightedAverage,
+  latestValues,
+  exportedJson,
   onNameChange,
   onSourcesChange,
-  onTradingMarketChange
+  onTradingMarketChange,
+  onWeightedAverageChange,
+  onExportJson
 }: ConfigurationFormShellProps) {
   const nameError = name.trim().length === 0 ? 'Configuration name is required.' : null;
   const sourcesError = selectedSources.length === 0 ? 'Select at least one quote source.' : null;
@@ -101,6 +112,36 @@ export function ConfigurationFormShell({
         {tradingMarketError ? (
           <p className="configuration-form__error">{tradingMarketError}</p>
         ) : null}
+      </section>
+
+      <section className="configuration-form__section" aria-labelledby="weighted-average-section">
+        <div className="configuration-form__section-header">
+          <div>
+            <h2 id="weighted-average-section">Weighted Average</h2>
+            <p>Combine selected quote sources into one calculated price.</p>
+          </div>
+        </div>
+        <WeightedAveragePanel
+          latestValues={latestValues}
+          selectedSources={selectedQuoteSources}
+          value={weightedAverage}
+          onChange={onWeightedAverageChange}
+        />
+      </section>
+
+      <section className="configuration-form__section" aria-labelledby="json-section">
+        <div className="configuration-form__section-header">
+          <div>
+            <h2 id="json-section">JSON Configuration</h2>
+            <p>Generated configuration for arbiDexServerBots.</p>
+          </div>
+          <Button disabled={!canSave} onClick={onExportJson}>
+            Export JSON
+          </Button>
+        </div>
+        <pre className="configuration-form__json" aria-label="Generated JSON">
+          {exportedJson || 'Complete required fields to generate JSON.'}
+        </pre>
       </section>
     </main>
   );

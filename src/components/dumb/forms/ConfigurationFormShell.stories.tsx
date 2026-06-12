@@ -21,9 +21,17 @@ const meta = {
     quoteSourcesError: null,
     tradingMarket: mockQuoteSources[0].key,
     profitCurrency: 'USDC',
+    weightedAverage: {
+      enabled: false,
+      sources: []
+    },
+    latestValues: {},
+    exportedJson: '',
     onNameChange: () => undefined,
     onSourcesChange: () => undefined,
-    onTradingMarketChange: () => undefined
+    onTradingMarketChange: () => undefined,
+    onWeightedAverageChange: () => undefined,
+    onExportJson: () => undefined
   }
 } satisfies Meta<typeof ConfigurationFormShell>;
 
@@ -43,8 +51,7 @@ export const Loading: Story = {
 export const Empty: Story = {
   args: {
     quoteSources: [],
-    selectedSources: []
-    ,
+    selectedSources: [],
     tradingMarket: '',
     profitCurrency: ''
   }

@@ -4,6 +4,48 @@
 
 ## 2026-06-12
 
+### Weighted average and JSON export flow
+
+Status: completed
+
+Что сделано:
+- Добавлены dumb-компоненты `WeightedAveragePanel` и `WeightedAverageSourceRow`.
+- Форма конфигурации получила секцию Weighted Average с enable toggle, редактированием весов, расчетом total weight и preview weighted price.
+- Добавлен чистый `configurationBuilder` для сборки минимального `BotConfiguration`.
+- Добавлен JSON preview/export action в `ConfigurationFormShell`.
+- Container формы хранит `weightedAverage` state и генерирует serialized JSON.
+- Добавлены Storybook stories для `WeightedAveragePanel`.
+- Добавлены unit/component/e2e tests для weighted average и JSON export flow.
+
+Измененные файлы:
+- `src/components/dumb/forms/WeightedAveragePanel.tsx`
+- `src/components/dumb/forms/WeightedAveragePanel.css`
+- `src/components/dumb/forms/WeightedAveragePanel.stories.tsx`
+- `src/components/dumb/forms/WeightedAveragePanel.test.tsx`
+- `src/components/dumb/forms/WeightedAverageSourceRow.tsx`
+- `src/components/dumb/forms/WeightedAverageSourceRow.css`
+- `src/components/dumb/forms/ConfigurationFormShell.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.css`
+- `src/components/dumb/forms/ConfigurationFormShell.stories.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.test.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `src/utils/configuration/configurationBuilder.ts`
+- `src/utils/configuration/configurationBuilder.test.ts`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 44 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- JSON export пока отображается как preview в форме, без скачивания файла и без backend save.
+- Валидация weighted average есть на UI уровне, но пока не блокирует Export JSON отдельно от базовых required fields.
+- `test:storybook` все еще не запускался.
+
 ### Configuration source and market flow
 
 Status: completed

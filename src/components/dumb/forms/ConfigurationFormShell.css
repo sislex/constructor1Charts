@@ -78,3 +78,17 @@
   color: var(--color-error);
   font-size: 13px;
 }
+
+.configuration-form__json {
+  min-height: 220px;
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin: 0;
+  padding: 14px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 12px;
+  line-height: 1.6;
+}

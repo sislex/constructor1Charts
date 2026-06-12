@@ -16,6 +16,17 @@ describe('ConfigurationFormShell', () => {
     expect(screen.getByRole('button', { name: 'Save Configuration' })).toBeDisabled();
   });
 
+  it('emits export JSON action when form is valid', async () => {
+    const user = userEvent.setup();
+    const onExportJson = vi.fn();
+
+    renderForm({ onExportJson });
+
+    await user.click(screen.getByRole('button', { name: 'Export JSON' }));
+
+    expect(onExportJson).toHaveBeenCalledOnce();
+  });
+
   it('emits name, source and market changes', async () => {
     const user = userEvent.setup();
     const onNameChange = vi.fn();
@@ -53,9 +64,14 @@ function renderForm(
         selectedSources={[mockQuoteSources[1].key]}
         tradingMarket={mockQuoteSources[1].key}
         profitCurrency="USDC"
+        weightedAverage={{ enabled: false, sources: [] }}
+        latestValues={{}}
+        exportedJson=""
         onNameChange={() => undefined}
         onSourcesChange={() => undefined}
         onTradingMarketChange={() => undefined}
+        onWeightedAverageChange={() => undefined}
+        onExportJson={() => undefined}
         {...props}
       />
     </MemoryRouter>

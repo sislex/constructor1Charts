@@ -16,8 +16,12 @@ test('opens create configuration form and selects quote source', async ({ page }
   await page.getByLabel('Configuration Name').fill('ETH Arbitrage Bot');
   await page.getByRole('button', { name: /bybit.*ETH\/USDC.*askPrice/i }).click();
   await page.getByRole('combobox', { name: 'Trading Market' }).selectOption('bybit|ETH/USDC|askPrice');
+  await page.getByLabel('Enable Weighted Average').check();
+  await page.getByRole('button', { name: 'Export JSON' }).click();
 
   await expect(page.getByText('1 selected')).toBeVisible();
   await expect(page.getByLabel('Profit currency')).toContainText('USDC');
+  await expect(page.getByLabel('Generated JSON')).toContainText('"name": "ETH Arbitrage Bot"');
+  await expect(page.getByLabel('Generated JSON')).toContainText('"weightedAverage"');
   await expect(page.getByRole('button', { name: 'Save Configuration' })).toBeEnabled();
 });

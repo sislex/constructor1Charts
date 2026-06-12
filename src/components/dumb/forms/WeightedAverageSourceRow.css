@@ -1,0 +1,27 @@
+.weighted-average-source-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--color-surface-raised);
+}
+
+.weighted-average-source-row span {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weighted-average-source-row input {
+  min-height: 34px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
