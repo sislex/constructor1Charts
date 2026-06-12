@@ -4,6 +4,54 @@
 
 ## 2026-06-12
 
+### Foundation implementation
+
+Status: completed
+
+Что сделано:
+- Создан Vite React/TypeScript scaffold без реализации бизнес-экранов приложения.
+- Настроены `package.json`, TypeScript strict config, Vite, Vitest, Playwright, ESLint и Storybook config.
+- Добавлена структура `src` для app, components, containers, services, store, types, utils.
+- Добавлены domain interfaces для конфигураций, котировок, player, conditions, demo trading, transactions и chart events.
+- Реализованы чистые utilities: quote key parser, token metadata resolver, profit currency, weighted average, financial calculations.
+- Добавлен Redux Toolkit store с slices из ТЗ и root saga.
+- Добавлен dark/light theme layer на CSS variables, theme persistence и dashboard theme toggle.
+- Добавлен первый desktop Dashboard shell как dumb component и container.
+- Добавлены Storybook stories для `Button` и `DashboardShell`.
+- Добавлены unit/component/e2e smoke tests.
+- Добавлен `.gitignore`.
+
+Измененные файлы:
+- `package.json`
+- `package-lock.json`
+- `index.html`
+- `tsconfig.json`
+- `tsconfig.app.json`
+- `tsconfig.node.json`
+- `vite.config.ts`
+- `vitest.config.ts`
+- `vitest.setup.ts`
+- `playwright.config.ts`
+- `.storybook/main.ts`
+- `.storybook/preview.tsx`
+- `eslint.config.js`
+- `.gitignore`
+- `src/**`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run typecheck` - passed.
+- `npm run lint` - passed.
+- `npm test` - passed, 26 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 1 Playwright smoke test.
+
+Риски:
+- `npm install` сообщает 9 vulnerabilities в dependency tree. `npm audit fix --force` не запускался, потому что может внести breaking changes.
+- React Router выводит future flag warnings для v7 в тестах; поведение не ломается, можно включить future flags отдельной задачей.
+- Storybook stories добавлены, но `test:storybook` пока не запускался.
+
 ### Planning artifacts
 
 Status: completed
