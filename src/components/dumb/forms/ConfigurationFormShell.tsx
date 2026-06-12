@@ -21,6 +21,7 @@ import { ConditionsBuilder, type ConditionDraft } from '@components/dumb/conditi
 import './ConfigurationFormShell.css';
 
 export interface ConfigurationFormShellProps {
+  title: string;
   name: string;
   selectedSources: string[];
   quoteSources: QuoteSource[];
@@ -52,6 +53,7 @@ export interface ConfigurationFormShellProps {
 }
 
 export function ConfigurationFormShell({
+  title,
   name,
   selectedSources,
   quoteSources,
@@ -97,7 +99,7 @@ export function ConfigurationFormShell({
           <Link className="configuration-form__back" to="/">
             Dashboard
           </Link>
-          <h1>Create Configuration</h1>
+          <h1>{title}</h1>
         </div>
         <Button disabled={!canSave} variant="primary" onClick={onSaveConfiguration}>
           Save Configuration

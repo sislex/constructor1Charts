@@ -126,6 +126,7 @@ function renderForm(
     <MemoryRouter>
       <ConfigurationFormShell
         name="ETH Arbitrage Bot"
+        title="Create Configuration"
         quoteSources={mockQuoteSources}
         quoteSourcesError={null}
         quoteSourcesLoading={false}

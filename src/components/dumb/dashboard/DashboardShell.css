@@ -146,10 +146,25 @@
   justify-content: flex-end;
 }
 
-.dashboard-shell__row-actions .button {
+.dashboard-shell__row-actions .button,
+.dashboard-shell__row-link {
   min-height: 32px;
   padding: 0 10px;
   font-size: 12px;
+}
+
+.dashboard-shell__row-link {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.dashboard-shell__row-link:hover {
+  border-color: var(--color-primary);
 }
 
 .dashboard-shell__export {

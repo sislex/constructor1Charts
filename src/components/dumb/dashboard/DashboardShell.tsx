@@ -77,6 +77,9 @@ export function DashboardShell({
                 <span>{configuration.profitCurrency}</span>
                 <span>{configuration.conditions.length} conditions</span>
                 <div className="dashboard-shell__row-actions">
+                  <Link className="dashboard-shell__row-link" to={`/configurations/${configuration.id}/edit`}>
+                    Edit
+                  </Link>
                   <Button onClick={() => onExportConfiguration(configuration.id)}>Export JSON</Button>
                   <Button onClick={() => onDuplicateConfiguration(configuration.id)}>Duplicate</Button>
                   <Button onClick={() => onDeleteConfiguration(configuration.id)}>Delete</Button>

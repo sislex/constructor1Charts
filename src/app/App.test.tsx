@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { ThemeProvider } from '@app/providers/ThemeProvider';
-import { store, type AppStore } from '@store/store';
+import { createAppStore, type AppStore } from '@store/store';
 import { App } from './App';
 
 describe('App', () => {
@@ -50,9 +50,33 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Bot Configurations' })).toBeInTheDocument();
     expect(screen.getByText('ETH Arbitrage Bot')).toBeInTheDocument();
   });
+
+  it('edits an existing configuration', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.click(screen.getByRole('link', { name: 'Create Configuration' }));
+    await user.type(screen.getByLabelText('Configuration Name'), 'ETH Arbitrage Bot');
+    await user.click(screen.getByRole('button', { name: /bybit.*ETH\/USDC.*askPrice/i }));
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'Trading Market' }),
+      'bybit|ETH/USDC|askPrice'
+    );
+    await user.click(screen.getByRole('button', { name: 'Save Configuration' }));
+    await user.click(screen.getByRole('link', { name: 'Edit' }));
+
+    expect(screen.getByRole('heading', { name: 'Edit Configuration' })).toBeInTheDocument();
+
+    await user.clear(screen.getByLabelText('Configuration Name'));
+    await user.type(screen.getByLabelText('Configuration Name'), 'Updated ETH Bot');
+    await user.click(screen.getByRole('button', { name: 'Save Configuration' }));
+
+    expect(screen.getByText('Updated ETH Bot')).toBeInTheDocument();
+    expect(screen.queryByText('ETH Arbitrage Bot')).not.toBeInTheDocument();
+  });
 });
 
-function renderApp(appStore: AppStore = store) {
+function renderApp(appStore: AppStore = createAppStore()) {
   return render(
     <Provider store={appStore}>
       <MemoryRouter>

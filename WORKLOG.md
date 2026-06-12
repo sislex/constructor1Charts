@@ -4,6 +4,43 @@
 
 ## 2026-06-12
 
+### Edit configuration flow
+
+Status: completed
+
+Что сделано:
+- Добавлен route `/configurations/:configurationId/edit`.
+- `ConfigurationFormPageContainer` теперь работает в create/edit режимах.
+- При edit форма загружает сохраненную конфигурацию из Redux/localStorage-backed state.
+- Save в edit режиме обновляет существующую конфигурацию по тому же `id`, сохраняя `createdAt` и обновляя `updatedAt`.
+- Dashboard получил action link `Edit`.
+- Добавлена `createAppStore()` factory для изоляции тестов и устранения state bleed между App tests.
+- E2E flow расширен сценарием save -> edit -> rename -> save.
+
+Измененные файлы:
+- `src/app/App.tsx`
+- `src/app/App.test.tsx`
+- `src/store/store.ts`
+- `src/components/dumb/dashboard/DashboardShell.tsx`
+- `src/components/dumb/dashboard/DashboardShell.css`
+- `src/components/dumb/forms/ConfigurationFormShell.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.stories.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.test.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 65 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- Edit route depends on hydrated localStorage state; direct opening a missing/deleted id currently renders an empty edit form instead of a not-found state.
+- Delete still has no confirmation dialog.
+
 ### Configuration persistence and dashboard actions
 
 Status: completed

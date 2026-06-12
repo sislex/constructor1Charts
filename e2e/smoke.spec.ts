@@ -55,4 +55,11 @@ test('opens create configuration form and selects quote source', async ({ page }
 
   await page.getByRole('button', { name: 'Delete' }).first().click();
   await expect(page.getByText('ETH Arbitrage Bot Copy')).toBeVisible();
+
+  await page.getByRole('link', { name: 'Edit' }).click();
+  await expect(page.getByRole('heading', { name: 'Edit Configuration' })).toBeVisible();
+  await page.getByLabel('Configuration Name').fill('Updated ETH Bot');
+  await page.getByRole('button', { name: 'Save Configuration' }).click();
+  await expect(page.getByRole('heading', { name: 'Bot Configurations' })).toBeVisible();
+  await expect(page.getByText('Updated ETH Bot')).toBeVisible();
 });

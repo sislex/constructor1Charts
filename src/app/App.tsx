@@ -7,6 +7,7 @@ export function App() {
     <Routes>
       <Route path="/" element={<DashboardPageContainer />} />
       <Route path="/configurations/new" element={<ConfigurationFormPageContainer />} />
+      <Route path="/configurations/:configurationId/edit" element={<ConfigurationFormPageContainer />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -14,6 +14,7 @@ const meta = {
     )
   ],
   args: {
+    title: 'Create Configuration',
     name: 'ETH Arbitrage Bot',
     selectedSources: [mockQuoteSources[0].key],
     quoteSources: mockQuoteSources,

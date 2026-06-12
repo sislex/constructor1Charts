@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfigurationFormShell } from '@components/dumb/forms/ConfigurationFormShell';
 import type {
   AdvancedSettings,
@@ -25,6 +25,12 @@ import { mockQuoteSources } from '../mocks/quoteSources';
 export function ConfigurationFormPageContainer() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { configurationId } = useParams();
+  const editingConfiguration = useAppSelector((state) =>
+    configurationId
+      ? state.configurations.items.find((configuration) => configuration.id === configurationId)
+      : undefined
+  );
   const quoteSources = useAppSelector(selectQuoteSources);
   const quoteSourcesLoading = useAppSelector(selectQuoteSourcesLoading);
   const quoteSourcesError = useAppSelector(selectQuoteSourcesError);
@@ -67,6 +73,7 @@ export function ConfigurationFormPageContainer() {
     base: ''
   });
   const [exportedJson, setExportedJson] = useState('');
+  const [initializedConfigurationId, setInitializedConfigurationId] = useState<string | null>(null);
   const selectedTradingMarket = quoteSources.find((source) => source.key === tradingMarket);
   const profitCurrency = selectedTradingMarket ? getProfitCurrency(selectedTradingMarket.parsed) : '';
 
@@ -75,6 +82,24 @@ export function ConfigurationFormPageContainer() {
       dispatch(loadQuoteKeysSucceeded(mockQuoteSources));
     }
   }, [dispatch, quoteSources.length]);
+
+  useEffect(() => {
+    if (!editingConfiguration || initializedConfigurationId === editingConfiguration.id) {
+      return;
+    }
+
+    setName(editingConfiguration.name);
+    setSelectedSources(editingConfiguration.selectedSources);
+    setTradingMarket(editingConfiguration.tradingMarket);
+    setWeightedAverage(editingConfiguration.weightedAverage);
+    setBuySettings(editingConfiguration.buySettings);
+    setSellSettings(editingConfiguration.sellSettings);
+    setDemoSettings(editingConfiguration.demoSettings);
+    setAdvancedSettings(editingConfiguration.advancedSettings);
+    setConditions(editingConfiguration.conditions);
+    setExportedJson('');
+    setInitializedConfigurationId(editingConfiguration.id);
+  }, [editingConfiguration, initializedConfigurationId]);
 
   function handleSourcesChange(sources: string[]) {
     setSelectedSources(sources);
@@ -103,7 +128,7 @@ export function ConfigurationFormPageContainer() {
     const now = new Date().toISOString();
 
     return buildBotConfiguration({
-      id: createConfigurationId(),
+      id: editingConfiguration?.id ?? createConfigurationId(),
       name,
       selectedSources,
       tradingMarket,
@@ -120,7 +145,7 @@ export function ConfigurationFormPageContainer() {
       demoSettings,
       advancedSettings,
       conditions,
-      createdAt: now,
+      createdAt: editingConfiguration?.createdAt ?? now,
       updatedAt: now
     });
   }
@@ -161,6 +186,7 @@ export function ConfigurationFormPageContainer() {
       quoteSourcesLoading={quoteSourcesLoading && quoteSources.length === 0}
       selectedSources={selectedSources}
       sellSettings={{ ...sellSettings, sellCurrency: profitCurrency }}
+      title={editingConfiguration ? 'Edit Configuration' : 'Create Configuration'}
       tradingMarket={tradingMarket}
       weightedAverage={weightedAverage}
       onAdvancedSettingsChange={setAdvancedSettings}
