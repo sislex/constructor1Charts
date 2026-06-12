@@ -4,6 +4,47 @@
 
 ## 2026-06-12
 
+### Configuration source and market flow
+
+Status: completed
+
+Что сделано:
+- Добавлен typed REST layer для `GET /store/keys?detail=true&memory=true`: API config, fetch client, response mapper и нормализация ошибок.
+- Подключена `marketDataSaga` к root saga.
+- `marketDataSlice` расширен `quoteSources`, сохранив `quoteKeys` для совместимости.
+- Добавлены mock quote sources для локального UI и тестов.
+- Реализованы dumb-компоненты `QuoteSourceCard`, `QuoteSourceSelector`, `TradingMarketSelector`, `ProfitCurrencyField`, `ConfigurationFormShell`.
+- Добавлен container `/configurations/new` с локальным state для name, selected sources, trading market и вычисляемой profit currency.
+- Dashboard получил переход `Create Configuration`.
+- Добавлены Storybook stories для новых dumb-компонентов.
+- Добавлены unit, saga, component и e2e tests для нового flow.
+
+Измененные файлы:
+- `src/services/api/**`
+- `src/store/sagas/marketDataSaga.ts`
+- `src/store/slices/marketDataSlice.ts`
+- `src/store/selectors/marketDataSelectors.ts`
+- `src/mocks/quoteSources.ts`
+- `src/components/dumb/sources/**`
+- `src/components/dumb/forms/**`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `src/app/App.tsx`
+- `src/app/App.test.tsx`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 39 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- UI формы пока использует mock quote sources. Реальный REST client и saga покрыты тестами, но переключение UI на backend/mock mode нужно сделать отдельной задачей.
+- `test:storybook` все еще не запускался.
+- React Router продолжает выводить future flag warnings в тестах.
+
 ### Foundation implementation
 
 Status: completed

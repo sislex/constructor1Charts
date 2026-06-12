@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button } from '@components/dumb/common/Button';
 import type { AppTheme } from '@store/slices/settingsSlice';
 import './DashboardShell.css';
@@ -26,7 +27,9 @@ export function DashboardShell({
           <Button ariaLabel="Toggle color theme" onClick={onThemeToggle}>
             {theme === 'dark' ? 'Light theme' : 'Dark theme'}
           </Button>
-          <Button variant="primary">Create Configuration</Button>
+          <Link className="dashboard-shell__create-link" to="/configurations/new">
+            Create Configuration
+          </Link>
         </div>
       </header>
 

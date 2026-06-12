@@ -1,9 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import { DashboardShell } from './DashboardShell';
 
 const meta = {
   title: 'Dashboard/DashboardShell',
   component: DashboardShell,
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    )
+  ],
   args: {
     theme: 'dark',
     configurationCount: 0,

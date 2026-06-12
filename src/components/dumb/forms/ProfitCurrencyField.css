@@ -1,0 +1,19 @@
+.profit-currency-field {
+  display: grid;
+  width: 220px;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--color-surface-raised);
+}
+
+.profit-currency-field span {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.profit-currency-field strong {
+  color: var(--color-text);
+  font-size: 20px;
+}

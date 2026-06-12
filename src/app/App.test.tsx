@@ -23,6 +23,16 @@ describe('App', () => {
 
     expect(document.documentElement.dataset.theme).toBe('light');
   });
+
+  it('opens create configuration form from dashboard', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.click(screen.getByRole('link', { name: 'Create Configuration' }));
+
+    expect(screen.getByRole('heading', { name: 'Create Configuration' })).toBeInTheDocument();
+    expect(screen.getByText('Sources')).toBeInTheDocument();
+  });
 });
 
 function renderApp() {

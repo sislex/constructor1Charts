@@ -1,0 +1,40 @@
+.quote-source-selector {
+  display: grid;
+  gap: 14px;
+}
+
+.quote-source-selector__toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 150px 170px;
+  gap: 10px;
+}
+
+.quote-source-selector input,
+.quote-source-selector select {
+  min-height: 38px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0 12px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.quote-source-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.quote-source-selector__state {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-muted);
+}
+
+.quote-source-selector__state--error {
+  color: var(--color-error);
+}

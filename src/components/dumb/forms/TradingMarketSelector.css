@@ -1,0 +1,28 @@
+.trading-market-selector {
+  display: grid;
+  max-width: 680px;
+  gap: 8px;
+}
+
+.trading-market-selector span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.trading-market-selector select {
+  min-height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0 12px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.trading-market-selector__empty {
+  display: grid;
+  min-height: 84px;
+  place-items: center;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  color: var(--color-muted);
+}

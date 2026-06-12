@@ -1,0 +1,66 @@
+.quote-source-card {
+  display: grid;
+  width: 100%;
+  min-height: 118px;
+  gap: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.quote-source-card:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.quote-source-card--selected {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+}
+
+.quote-source-card__topline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.quote-source-card__type,
+.quote-source-card__field {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.quote-source-card__source {
+  color: var(--color-muted);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.quote-source-card__pair {
+  font-size: 18px;
+  font-weight: 760;
+}
+
+.quote-source-card__meta,
+.quote-source-card__raw {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.quote-source-card__raw {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
