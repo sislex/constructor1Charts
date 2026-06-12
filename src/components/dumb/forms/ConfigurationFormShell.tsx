@@ -1,10 +1,21 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@components/dumb/common/Button';
 import { QuoteSourceSelector } from '@components/dumb/sources/QuoteSourceSelector';
-import type { QuoteSource, WeightedAverageConfig } from '@domainTypes/domain';
+import type {
+  AdvancedSettings,
+  BuySettings,
+  DemoSettings,
+  QuoteSource,
+  SellSettings,
+  WeightedAverageConfig
+} from '@domainTypes/domain';
 import { ProfitCurrencyField } from './ProfitCurrencyField';
 import { TradingMarketSelector } from './TradingMarketSelector';
 import { WeightedAveragePanel } from './WeightedAveragePanel';
+import { BuySettingsPanel } from './BuySettingsPanel';
+import { SellSettingsPanel } from './SellSettingsPanel';
+import { DemoSettingsPanel } from './DemoSettingsPanel';
+import { AdvancedSettingsPanel } from './AdvancedSettingsPanel';
 import './ConfigurationFormShell.css';
 
 export interface ConfigurationFormShellProps {
@@ -16,12 +27,20 @@ export interface ConfigurationFormShellProps {
   tradingMarket: string;
   profitCurrency: string;
   weightedAverage: WeightedAverageConfig;
+  buySettings: BuySettings;
+  sellSettings: SellSettings;
+  demoSettings: DemoSettings;
+  advancedSettings: AdvancedSettings;
   latestValues: Record<string, number>;
   exportedJson: string;
   onNameChange: (name: string) => void;
   onSourcesChange: (sources: string[]) => void;
   onTradingMarketChange: (market: string) => void;
   onWeightedAverageChange: (weightedAverage: WeightedAverageConfig) => void;
+  onBuySettingsChange: (settings: BuySettings) => void;
+  onSellSettingsChange: (settings: SellSettings) => void;
+  onDemoSettingsChange: (settings: DemoSettings) => void;
+  onAdvancedSettingsChange: (settings: AdvancedSettings) => void;
   onExportJson: () => void;
 }
 
@@ -34,12 +53,20 @@ export function ConfigurationFormShell({
   tradingMarket,
   profitCurrency,
   weightedAverage,
+  buySettings,
+  sellSettings,
+  demoSettings,
+  advancedSettings,
   latestValues,
   exportedJson,
   onNameChange,
   onSourcesChange,
   onTradingMarketChange,
   onWeightedAverageChange,
+  onBuySettingsChange,
+  onSellSettingsChange,
+  onDemoSettingsChange,
+  onAdvancedSettingsChange,
   onExportJson
 }: ConfigurationFormShellProps) {
   const nameError = name.trim().length === 0 ? 'Configuration name is required.' : null;
@@ -127,6 +154,36 @@ export function ConfigurationFormShell({
           value={weightedAverage}
           onChange={onWeightedAverageChange}
         />
+      </section>
+
+      <section className="configuration-form__section" aria-labelledby="trade-settings-section">
+        <div className="configuration-form__section-header">
+          <div>
+            <h2 id="trade-settings-section">Buy / Sell Settings</h2>
+            <p>Configure demo execution amounts for BUY and SELL actions.</p>
+          </div>
+        </div>
+        <BuySettingsPanel
+          profitCurrency={profitCurrency}
+          value={buySettings}
+          onChange={onBuySettingsChange}
+        />
+        <SellSettingsPanel
+          profitCurrency={profitCurrency}
+          value={sellSettings}
+          onChange={onSellSettingsChange}
+        />
+      </section>
+
+      <section className="configuration-form__section" aria-labelledby="runtime-settings-section">
+        <div className="configuration-form__section-header">
+          <div>
+            <h2 id="runtime-settings-section">Demo and Advanced Settings</h2>
+            <p>Set transaction delay, slippage, fees, gas and auto-save behavior.</p>
+          </div>
+        </div>
+        <DemoSettingsPanel value={demoSettings} onChange={onDemoSettingsChange} />
+        <AdvancedSettingsPanel value={advancedSettings} onChange={onAdvancedSettingsChange} />
       </section>
 
       <section className="configuration-form__section" aria-labelledby="json-section">

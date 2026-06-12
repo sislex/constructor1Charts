@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { ConfigurationFormShell } from '@components/dumb/forms/ConfigurationFormShell';
-import type { WeightedAverageConfig } from '@domainTypes/domain';
+import type {
+  AdvancedSettings,
+  BuySettings,
+  DemoSettings,
+  SellSettings,
+  WeightedAverageConfig
+} from '@domainTypes/domain';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import {
   selectQuoteSources,
@@ -24,6 +30,27 @@ export function ConfigurationFormPageContainer() {
   const [weightedAverage, setWeightedAverage] = useState<WeightedAverageConfig>({
     enabled: false,
     sources: []
+  });
+  const [buySettings, setBuySettings] = useState<BuySettings>({
+    buyAmount: 100,
+    buyCurrency: '',
+    buyAmountType: 'FIXED'
+  });
+  const [sellSettings, setSellSettings] = useState<SellSettings>({
+    sellAmount: 100,
+    sellCurrency: '',
+    sellMode: 'FULL_POSITION'
+  });
+  const [demoSettings, setDemoSettings] = useState<DemoSettings>({
+    enabled: true,
+    demoTransactionDelayMs: 5000
+  });
+  const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>({
+    defaultSlippagePercent: 0.1,
+    tradingFeePercent: 0.1,
+    gasFee: 0,
+    autoSaveEnabled: false,
+    autoSaveIntervalMs: 30000
   });
   const [exportedJson, setExportedJson] = useState('');
   const selectedTradingMarket = quoteSources.find((source) => source.key === tradingMarket);
@@ -58,6 +85,16 @@ export function ConfigurationFormPageContainer() {
       tradingMarket,
       profitCurrency,
       weightedAverage,
+      buySettings: {
+        ...buySettings,
+        buyCurrency: profitCurrency
+      },
+      sellSettings: {
+        ...sellSettings,
+        sellCurrency: profitCurrency
+      },
+      demoSettings,
+      advancedSettings,
       createdAt: now,
       updatedAt: now
     });
@@ -67,6 +104,9 @@ export function ConfigurationFormPageContainer() {
 
   return (
     <ConfigurationFormShell
+      advancedSettings={advancedSettings}
+      buySettings={{ ...buySettings, buyCurrency: profitCurrency }}
+      demoSettings={demoSettings}
       exportedJson={exportedJson}
       latestValues={latestValues}
       name={name}
@@ -75,10 +115,15 @@ export function ConfigurationFormPageContainer() {
       quoteSourcesError={quoteSourcesError}
       quoteSourcesLoading={quoteSourcesLoading && quoteSources.length === 0}
       selectedSources={selectedSources}
+      sellSettings={{ ...sellSettings, sellCurrency: profitCurrency }}
       tradingMarket={tradingMarket}
       weightedAverage={weightedAverage}
+      onAdvancedSettingsChange={setAdvancedSettings}
+      onBuySettingsChange={setBuySettings}
+      onDemoSettingsChange={setDemoSettings}
       onExportJson={handleExportJson}
       onNameChange={setName}
+      onSellSettingsChange={setSellSettings}
       onSourcesChange={handleSourcesChange}
       onTradingMarketChange={setTradingMarket}
       onWeightedAverageChange={setWeightedAverage}

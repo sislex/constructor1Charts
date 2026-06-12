@@ -25,12 +25,37 @@ const meta = {
       enabled: false,
       sources: []
     },
+    buySettings: {
+      buyAmount: 100,
+      buyCurrency: 'USDC',
+      buyAmountType: 'FIXED'
+    },
+    sellSettings: {
+      sellAmount: 100,
+      sellCurrency: 'USDC',
+      sellMode: 'FULL_POSITION'
+    },
+    demoSettings: {
+      enabled: true,
+      demoTransactionDelayMs: 5000
+    },
+    advancedSettings: {
+      defaultSlippagePercent: 0.1,
+      tradingFeePercent: 0.1,
+      gasFee: 0,
+      autoSaveEnabled: false,
+      autoSaveIntervalMs: 30000
+    },
     latestValues: {},
     exportedJson: '',
     onNameChange: () => undefined,
     onSourcesChange: () => undefined,
     onTradingMarketChange: () => undefined,
     onWeightedAverageChange: () => undefined,
+    onBuySettingsChange: () => undefined,
+    onSellSettingsChange: () => undefined,
+    onDemoSettingsChange: () => undefined,
+    onAdvancedSettingsChange: () => undefined,
     onExportJson: () => undefined
   }
 } satisfies Meta<typeof ConfigurationFormShell>;

@@ -1,4 +1,11 @@
-import type { BotConfiguration, WeightedAverageConfig } from '@domainTypes/domain';
+import type {
+  AdvancedSettings,
+  BotConfiguration,
+  BuySettings,
+  DemoSettings,
+  SellSettings,
+  WeightedAverageConfig
+} from '@domainTypes/domain';
 
 export interface BuildConfigurationInput {
   id: string;
@@ -7,6 +14,10 @@ export interface BuildConfigurationInput {
   tradingMarket: string;
   profitCurrency: string;
   weightedAverage: WeightedAverageConfig;
+  buySettings: BuySettings;
+  sellSettings: SellSettings;
+  demoSettings: DemoSettings;
+  advancedSettings: AdvancedSettings;
   createdAt: string;
   updatedAt: string;
 }
@@ -24,27 +35,10 @@ export function buildBotConfiguration(input: BuildConfigurationInput): BotConfig
     weightedAverage: input.weightedAverage,
     conditions: [],
     conditionGroups: [],
-    demoSettings: {
-      enabled: true,
-      demoTransactionDelayMs: 5000
-    },
-    advancedSettings: {
-      defaultSlippagePercent: 0.1,
-      tradingFeePercent: 0.1,
-      gasFee: 0,
-      autoSaveEnabled: false,
-      autoSaveIntervalMs: 30000
-    },
-    buySettings: {
-      buyAmount: 100,
-      buyCurrency: input.profitCurrency,
-      buyAmountType: 'FIXED'
-    },
-    sellSettings: {
-      sellAmount: 100,
-      sellCurrency: input.profitCurrency,
-      sellMode: 'FULL_POSITION'
-    },
+    demoSettings: input.demoSettings,
+    advancedSettings: input.advancedSettings,
+    buySettings: input.buySettings,
+    sellSettings: input.sellSettings,
     createdAt: input.createdAt,
     updatedAt: input.updatedAt,
     status: 'draft'

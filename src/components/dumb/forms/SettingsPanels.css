@@ -1,0 +1,50 @@
+.settings-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.settings-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.settings-panel label {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-panel label span {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.settings-panel input,
+.settings-panel select {
+  min-height: 38px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0 12px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.settings-panel input[readonly] {
+  color: var(--color-muted);
+}
+
+.settings-panel__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-panel__toggle input {
+  min-height: auto;
+}
+
+.settings-panel__error {
+  margin: 0;
+  color: var(--color-error);
+  font-size: 13px;
+}

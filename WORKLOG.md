@@ -4,6 +4,52 @@
 
 ## 2026-06-12
 
+### Buy sell demo and advanced settings
+
+Status: completed
+
+Что сделано:
+- Добавлены dumb-компоненты `BuySettingsPanel`, `SellSettingsPanel`, `DemoSettingsPanel`, `AdvancedSettingsPanel`.
+- Форма конфигурации получила секции Buy / Sell Settings и Demo and Advanced Settings.
+- Container формы хранит и обновляет `buySettings`, `sellSettings`, `demoSettings`, `advancedSettings`.
+- `configurationBuilder` расширен так, чтобы использовать реальные настройки формы вместо hardcoded defaults.
+- JSON export теперь включает настройки BUY, SELL, demo mode, slippage, fee, gas и auto-save.
+- Добавлены Storybook stories для новых settings panels.
+- Добавлены component tests для settings panels и form integration.
+- E2E flow расширен проверкой BUY percent, partial SELL, auto-save и JSON output.
+
+Измененные файлы:
+- `src/components/dumb/forms/BuySettingsPanel.tsx`
+- `src/components/dumb/forms/BuySettingsPanel.stories.tsx`
+- `src/components/dumb/forms/SellSettingsPanel.tsx`
+- `src/components/dumb/forms/SellSettingsPanel.stories.tsx`
+- `src/components/dumb/forms/DemoSettingsPanel.tsx`
+- `src/components/dumb/forms/DemoSettingsPanel.stories.tsx`
+- `src/components/dumb/forms/AdvancedSettingsPanel.tsx`
+- `src/components/dumb/forms/AdvancedSettingsPanel.stories.tsx`
+- `src/components/dumb/forms/SettingsPanels.css`
+- `src/components/dumb/forms/SettingsPanels.test.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.stories.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.test.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `src/utils/configuration/configurationBuilder.ts`
+- `src/utils/configuration/configurationBuilder.test.ts`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 49 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- Numeric validation is displayed in panels but does not yet block JSON export globally.
+- Settings are form-local state only; backend save/persistence is still not implemented.
+- `test:storybook` still has not been run.
+
 ### Weighted average and JSON export flow
 
 Status: completed

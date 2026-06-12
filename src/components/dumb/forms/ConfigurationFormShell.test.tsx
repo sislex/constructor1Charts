@@ -49,6 +49,48 @@ describe('ConfigurationFormShell', () => {
     ]);
     expect(onTradingMarketChange).toHaveBeenCalledWith(mockQuoteSources[1].key);
   });
+
+  it('emits buy, sell, demo and advanced settings changes', async () => {
+    const user = userEvent.setup();
+    const onBuySettingsChange = vi.fn();
+    const onSellSettingsChange = vi.fn();
+    const onDemoSettingsChange = vi.fn();
+    const onAdvancedSettingsChange = vi.fn();
+
+    renderForm({
+      onBuySettingsChange,
+      onSellSettingsChange,
+      onDemoSettingsChange,
+      onAdvancedSettingsChange
+    });
+
+    await user.selectOptions(screen.getByLabelText('Amount Type'), 'PERCENT');
+    await user.selectOptions(screen.getByLabelText('SELL Mode'), 'PARTIAL');
+    await user.click(screen.getByLabelText('Demo Mode'));
+    await user.click(screen.getByLabelText('Auto Save'));
+
+    expect(onBuySettingsChange).toHaveBeenCalledWith({
+      buyAmount: 100,
+      buyCurrency: 'USDC',
+      buyAmountType: 'PERCENT'
+    });
+    expect(onSellSettingsChange).toHaveBeenCalledWith({
+      sellAmount: 100,
+      sellCurrency: 'USDC',
+      sellMode: 'PARTIAL'
+    });
+    expect(onDemoSettingsChange).toHaveBeenCalledWith({
+      enabled: false,
+      demoTransactionDelayMs: 5000
+    });
+    expect(onAdvancedSettingsChange).toHaveBeenCalledWith({
+      defaultSlippagePercent: 0.1,
+      tradingFeePercent: 0.1,
+      gasFee: 0,
+      autoSaveEnabled: true,
+      autoSaveIntervalMs: 30000
+    });
+  });
 });
 
 function renderForm(
@@ -65,12 +107,26 @@ function renderForm(
         tradingMarket={mockQuoteSources[1].key}
         profitCurrency="USDC"
         weightedAverage={{ enabled: false, sources: [] }}
+        buySettings={{ buyAmount: 100, buyCurrency: 'USDC', buyAmountType: 'FIXED' }}
+        sellSettings={{ sellAmount: 100, sellCurrency: 'USDC', sellMode: 'FULL_POSITION' }}
+        demoSettings={{ enabled: true, demoTransactionDelayMs: 5000 }}
+        advancedSettings={{
+          defaultSlippagePercent: 0.1,
+          tradingFeePercent: 0.1,
+          gasFee: 0,
+          autoSaveEnabled: false,
+          autoSaveIntervalMs: 30000
+        }}
         latestValues={{}}
         exportedJson=""
         onNameChange={() => undefined}
         onSourcesChange={() => undefined}
         onTradingMarketChange={() => undefined}
         onWeightedAverageChange={() => undefined}
+        onBuySettingsChange={() => undefined}
+        onSellSettingsChange={() => undefined}
+        onDemoSettingsChange={() => undefined}
+        onAdvancedSettingsChange={() => undefined}
         onExportJson={() => undefined}
         {...props}
       />
