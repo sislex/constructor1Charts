@@ -4,6 +4,85 @@
 
 ## 2026-06-12
 
+### Save configuration hotfix
+
+Status: completed
+
+Что сделано:
+- Исправлена кнопка `Save Configuration`: добавлен `onSaveConfiguration` callback.
+- Добавлен reducer `configurationSaved` в `configurationsSlice`.
+- Container формы теперь собирает `BotConfiguration`, сохраняет его в Redux и возвращает пользователя на Dashboard.
+- Dashboard теперь отображает сохраненные конфигурации вместо empty state.
+- Добавлены проверки сохранения в component/app/e2e tests.
+
+Измененные файлы:
+- `src/store/slices/configurationsSlice.ts`
+- `src/components/dumb/forms/ConfigurationFormShell.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.stories.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.test.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `src/components/dumb/dashboard/DashboardShell.tsx`
+- `src/components/dumb/dashboard/DashboardShell.css`
+- `src/components/dumb/dashboard/DashboardShell.stories.tsx`
+- `src/containers/DashboardPageContainer.tsx`
+- `src/app/App.test.tsx`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 59 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- Save пока сохраняет конфигурацию только в Redux memory store. После перезагрузки страницы конфигурация пропадет, пока не будет реализовано backend/local persistence.
+
+### Conditions builder foundation
+
+Status: completed
+
+Что сделано:
+- Добавлен чистый `conditionsEngine` с supported metrics, operator evaluation и validation условий.
+- Реализованы dumb-компоненты `ConditionsBuilder` и `ConditionCard`.
+- Форма конфигурации получила секцию Conditions.
+- Container формы хранит `conditions` и `conditionDraft`.
+- `configurationBuilder` расширен полем `conditions`, JSON export теперь включает созданные условия.
+- Добавлены Storybook stories для Conditions Builder.
+- Добавлены unit tests для operators/validation и component tests для Conditions Builder.
+- E2E flow расширен добавлением condition и проверкой conditions в JSON.
+
+Измененные файлы:
+- `src/utils/conditions/conditionsEngine.ts`
+- `src/utils/conditions/conditionsEngine.test.ts`
+- `src/utils/configuration/configurationBuilder.ts`
+- `src/utils/configuration/configurationBuilder.test.ts`
+- `src/components/dumb/conditions/ConditionCard.tsx`
+- `src/components/dumb/conditions/ConditionsBuilder.tsx`
+- `src/components/dumb/conditions/ConditionsBuilder.css`
+- `src/components/dumb/conditions/ConditionsBuilder.stories.tsx`
+- `src/components/dumb/conditions/ConditionsBuilder.test.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.stories.tsx`
+- `src/components/dumb/forms/ConfigurationFormShell.test.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 57 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- Conditions Builder пока поддерживает плоский список условий без groups, condition history и bot state UI.
+- Operators `BETWEEN` пока реализован как диапазон `0..value`; полноценный lower/upper range потребует расширения `ConditionExpression`.
+- Условия пока только экспортируются в JSON; runtime evaluation в replay/live saga еще не подключен.
+- `test:storybook` still has not been run.
+
 ### Buy sell demo and advanced settings
 
 Status: completed

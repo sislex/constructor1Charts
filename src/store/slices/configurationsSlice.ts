@@ -31,6 +31,16 @@ export const configurationsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    configurationSaved(state, action: PayloadAction<BotConfiguration>) {
+      const existingIndex = state.items.findIndex((item) => item.id === action.payload.id);
+
+      if (existingIndex >= 0) {
+        state.items[existingIndex] = action.payload;
+        return;
+      }
+
+      state.items.push(action.payload);
+    },
     setConfigurationsSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
     }
@@ -41,5 +51,6 @@ export const {
   loadConfigurationsRequested,
   loadConfigurationsSucceeded,
   loadConfigurationsFailed,
+  configurationSaved,
   setConfigurationsSearch
 } = configurationsSlice.actions;

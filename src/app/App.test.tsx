@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { ThemeProvider } from '@app/providers/ThemeProvider';
-import { store } from '@store/store';
+import { store, type AppStore } from '@store/store';
 import { App } from './App';
 
 describe('App', () => {
@@ -33,11 +33,28 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Create Configuration' })).toBeInTheDocument();
     expect(screen.getByText('Sources')).toBeInTheDocument();
   });
+
+  it('saves configuration and returns to dashboard', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.click(screen.getByRole('link', { name: 'Create Configuration' }));
+    await user.type(screen.getByLabelText('Configuration Name'), 'ETH Arbitrage Bot');
+    await user.click(screen.getByRole('button', { name: /bybit.*ETH\/USDC.*askPrice/i }));
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'Trading Market' }),
+      'bybit|ETH/USDC|askPrice'
+    );
+    await user.click(screen.getByRole('button', { name: 'Save Configuration' }));
+
+    expect(screen.getByRole('heading', { name: 'Bot Configurations' })).toBeInTheDocument();
+    expect(screen.getByText('ETH Arbitrage Bot')).toBeInTheDocument();
+  });
 });
 
-function renderApp() {
+function renderApp(appStore: AppStore = store) {
   return render(
-    <Provider store={store}>
+    <Provider store={appStore}>
       <MemoryRouter>
         <ThemeProvider>
           <App />

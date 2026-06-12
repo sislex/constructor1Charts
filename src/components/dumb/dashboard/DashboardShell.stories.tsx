@@ -14,6 +14,7 @@ const meta = {
   ],
   args: {
     theme: 'dark',
+    configurations: [],
     configurationCount: 0,
     quoteSourceCount: 0,
     onThemeToggle: () => undefined
@@ -26,6 +27,33 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    configurations: [
+      {
+        id: 'config-1',
+        name: 'ETH Arbitrage Bot',
+        tags: [],
+        enabled: true,
+        selectedSources: ['bybit|ETH/USDC|askPrice'],
+        tradingMarket: 'bybit|ETH/USDC|askPrice',
+        profitCurrency: 'USDC',
+        weightedAverage: { enabled: false, sources: [] },
+        conditions: [],
+        conditionGroups: [],
+        demoSettings: { enabled: true, demoTransactionDelayMs: 5000 },
+        advancedSettings: {
+          defaultSlippagePercent: 0.1,
+          tradingFeePercent: 0.1,
+          gasFee: 0,
+          autoSaveEnabled: false,
+          autoSaveIntervalMs: 30000
+        },
+        buySettings: { buyAmount: 100, buyCurrency: 'USDC', buyAmountType: 'FIXED' },
+        sellSettings: { sellAmount: 100, sellCurrency: 'USDC', sellMode: 'FULL_POSITION' },
+        createdAt: '2026-06-12T00:00:00.000Z',
+        updatedAt: '2026-06-12T00:00:00.000Z',
+        status: 'draft'
+      }
+    ],
     configurationCount: 3,
     quoteSourceCount: 24
   }
@@ -49,6 +77,7 @@ export const Error: Story = {
 
 export const Selected: Story = {
   args: {
+    configurations: [],
     configurationCount: 1,
     quoteSourceCount: 6
   }

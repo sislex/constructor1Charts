@@ -21,6 +21,7 @@ test('opens create configuration form and selects quote source', async ({ page }
   await page.getByLabel('SELL Mode').selectOption('PARTIAL');
   await page.getByLabel('SELL Percent').fill('50');
   await page.getByRole('checkbox', { name: 'Auto Save' }).check();
+  await page.getByRole('button', { name: 'Add Condition' }).click();
   await page.getByRole('button', { name: 'Export JSON' }).click();
 
   await expect(page.getByText('1 selected')).toBeVisible();
@@ -30,5 +31,12 @@ test('opens create configuration form and selects quote source', async ({ page }
   await expect(page.getByLabel('Generated JSON')).toContainText('"buyAmountType": "PERCENT"');
   await expect(page.getByLabel('Generated JSON')).toContainText('"sellMode": "PARTIAL"');
   await expect(page.getByLabel('Generated JSON')).toContainText('"autoSaveEnabled": true');
+  await expect(page.getByLabel('Generated JSON')).toContainText('"conditions"');
+  await expect(page.getByLabel('Generated JSON')).toContainText('"Take Profit"');
   await expect(page.getByRole('button', { name: 'Save Configuration' })).toBeEnabled();
+
+  await page.getByRole('button', { name: 'Save Configuration' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Bot Configurations' })).toBeVisible();
+  await expect(page.getByText('ETH Arbitrage Bot')).toBeVisible();
 });

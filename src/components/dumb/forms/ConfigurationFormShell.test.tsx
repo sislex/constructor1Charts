@@ -27,6 +27,17 @@ describe('ConfigurationFormShell', () => {
     expect(onExportJson).toHaveBeenCalledOnce();
   });
 
+  it('emits save configuration action when form is valid', async () => {
+    const user = userEvent.setup();
+    const onSaveConfiguration = vi.fn();
+
+    renderForm({ onSaveConfiguration });
+
+    await user.click(screen.getByRole('button', { name: 'Save Configuration' }));
+
+    expect(onSaveConfiguration).toHaveBeenCalledOnce();
+  });
+
   it('emits name, source and market changes', async () => {
     const user = userEvent.setup();
     const onNameChange = vi.fn();
@@ -91,6 +102,21 @@ describe('ConfigurationFormShell', () => {
       autoSaveIntervalMs: 30000
     });
   });
+
+  it('emits condition draft and add condition actions', async () => {
+    const user = userEvent.setup();
+    const onConditionDraftChange = vi.fn();
+    const onAddCondition = vi.fn();
+
+    renderForm({ onConditionDraftChange, onAddCondition });
+
+    await user.clear(screen.getByLabelText('Condition Name'));
+    await user.type(screen.getByLabelText('Condition Name'), 'Stop Loss');
+    await user.click(screen.getByRole('button', { name: 'Add Condition' }));
+
+    expect(onConditionDraftChange).toHaveBeenCalled();
+    expect(onAddCondition).toHaveBeenCalledOnce();
+  });
 });
 
 function renderForm(
@@ -117,6 +143,15 @@ function renderForm(
           autoSaveEnabled: false,
           autoSaveIntervalMs: 30000
         }}
+        conditions={[]}
+        conditionDraft={{
+          name: 'Take Profit',
+          action: 'SELL',
+          metric: 'positionProfitPercent',
+          operator: 'GREATER_OR_EQUAL',
+          value: 0.5,
+          base: ''
+        }}
         latestValues={{}}
         exportedJson=""
         onNameChange={() => undefined}
@@ -127,6 +162,9 @@ function renderForm(
         onSellSettingsChange={() => undefined}
         onDemoSettingsChange={() => undefined}
         onAdvancedSettingsChange={() => undefined}
+        onConditionDraftChange={() => undefined}
+        onAddCondition={() => undefined}
+        onSaveConfiguration={() => undefined}
         onExportJson={() => undefined}
         {...props}
       />

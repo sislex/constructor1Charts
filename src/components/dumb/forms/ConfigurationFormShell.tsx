@@ -4,6 +4,7 @@ import { QuoteSourceSelector } from '@components/dumb/sources/QuoteSourceSelecto
 import type {
   AdvancedSettings,
   BuySettings,
+  Condition,
   DemoSettings,
   QuoteSource,
   SellSettings,
@@ -16,6 +17,7 @@ import { BuySettingsPanel } from './BuySettingsPanel';
 import { SellSettingsPanel } from './SellSettingsPanel';
 import { DemoSettingsPanel } from './DemoSettingsPanel';
 import { AdvancedSettingsPanel } from './AdvancedSettingsPanel';
+import { ConditionsBuilder, type ConditionDraft } from '@components/dumb/conditions/ConditionsBuilder';
 import './ConfigurationFormShell.css';
 
 export interface ConfigurationFormShellProps {
@@ -31,6 +33,8 @@ export interface ConfigurationFormShellProps {
   sellSettings: SellSettings;
   demoSettings: DemoSettings;
   advancedSettings: AdvancedSettings;
+  conditions: Condition[];
+  conditionDraft: ConditionDraft;
   latestValues: Record<string, number>;
   exportedJson: string;
   onNameChange: (name: string) => void;
@@ -41,6 +45,9 @@ export interface ConfigurationFormShellProps {
   onSellSettingsChange: (settings: SellSettings) => void;
   onDemoSettingsChange: (settings: DemoSettings) => void;
   onAdvancedSettingsChange: (settings: AdvancedSettings) => void;
+  onConditionDraftChange: (draft: ConditionDraft) => void;
+  onAddCondition: () => void;
+  onSaveConfiguration: () => void;
   onExportJson: () => void;
 }
 
@@ -57,6 +64,8 @@ export function ConfigurationFormShell({
   sellSettings,
   demoSettings,
   advancedSettings,
+  conditions,
+  conditionDraft,
   latestValues,
   exportedJson,
   onNameChange,
@@ -67,6 +76,9 @@ export function ConfigurationFormShell({
   onSellSettingsChange,
   onDemoSettingsChange,
   onAdvancedSettingsChange,
+  onConditionDraftChange,
+  onAddCondition,
+  onSaveConfiguration,
   onExportJson
 }: ConfigurationFormShellProps) {
   const nameError = name.trim().length === 0 ? 'Configuration name is required.' : null;
@@ -87,7 +99,7 @@ export function ConfigurationFormShell({
           </Link>
           <h1>Create Configuration</h1>
         </div>
-        <Button disabled={!canSave} variant="primary">
+        <Button disabled={!canSave} variant="primary" onClick={onSaveConfiguration}>
           Save Configuration
         </Button>
       </header>
@@ -184,6 +196,21 @@ export function ConfigurationFormShell({
         </div>
         <DemoSettingsPanel value={demoSettings} onChange={onDemoSettingsChange} />
         <AdvancedSettingsPanel value={advancedSettings} onChange={onAdvancedSettingsChange} />
+      </section>
+
+      <section className="configuration-form__section" aria-labelledby="conditions-section">
+        <div className="configuration-form__section-header">
+          <div>
+            <h2 id="conditions-section">Conditions</h2>
+            <p>Create BUY / SELL rules that will be exported with the bot configuration.</p>
+          </div>
+        </div>
+        <ConditionsBuilder
+          conditions={conditions}
+          draft={conditionDraft}
+          onAddCondition={onAddCondition}
+          onDraftChange={onConditionDraftChange}
+        />
       </section>
 
       <section className="configuration-form__section" aria-labelledby="json-section">

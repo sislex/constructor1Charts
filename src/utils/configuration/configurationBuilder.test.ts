@@ -34,6 +34,20 @@ describe('configurationBuilder', () => {
         autoSaveEnabled: false,
         autoSaveIntervalMs: 30000
       },
+      conditions: [
+        {
+          id: 'condition-1',
+          name: 'Take Profit',
+          enabled: true,
+          action: 'SELL',
+          priority: 1,
+          when: {
+            metric: 'positionProfitPercent',
+            operator: 'GREATER_OR_EQUAL',
+            value: 0.5
+          }
+        }
+      ],
       createdAt: '2026-06-12T00:00:00.000Z',
       updatedAt: '2026-06-12T00:00:00.000Z'
     });
@@ -45,6 +59,20 @@ describe('configurationBuilder', () => {
       tradingMarket: 'bybit|ETH/USDC|askPrice',
       profitCurrency: 'USDC',
       status: 'draft',
+      conditions: [
+        {
+          id: 'condition-1',
+          name: 'Take Profit',
+          enabled: true,
+          action: 'SELL',
+          priority: 1,
+          when: {
+            metric: 'positionProfitPercent',
+            operator: 'GREATER_OR_EQUAL',
+            value: 0.5
+          }
+        }
+      ],
       buySettings: {
         buyAmount: 100,
         buyCurrency: 'USDC',
@@ -82,6 +110,7 @@ describe('configurationBuilder', () => {
         autoSaveEnabled: false,
         autoSaveIntervalMs: 30000
       },
+      conditions: [],
       createdAt: '2026-06-12T00:00:00.000Z',
       updatedAt: '2026-06-12T00:00:00.000Z'
     });

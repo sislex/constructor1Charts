@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ConfigurationFormShell } from '@components/dumb/forms/ConfigurationFormShell';
 import type {
   AdvancedSettings,
   BuySettings,
+  Condition,
   DemoSettings,
   SellSettings,
   WeightedAverageConfig
 } from '@domainTypes/domain';
+import type { ConditionDraft } from '@components/dumb/conditions/ConditionsBuilder';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import {
   selectQuoteSources,
@@ -14,12 +17,14 @@ import {
   selectQuoteSourcesLoading
 } from '@store/selectors/marketDataSelectors';
 import { loadQuoteKeysSucceeded } from '@store/slices/marketDataSlice';
+import { configurationSaved } from '@store/slices/configurationsSlice';
 import { getProfitCurrency } from '@utils/market/profitCurrency';
 import { buildBotConfiguration, serializeBotConfiguration } from '@utils/configuration/configurationBuilder';
 import { mockQuoteSources } from '../mocks/quoteSources';
 
 export function ConfigurationFormPageContainer() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const quoteSources = useAppSelector(selectQuoteSources);
   const quoteSourcesLoading = useAppSelector(selectQuoteSourcesLoading);
   const quoteSourcesError = useAppSelector(selectQuoteSourcesError);
@@ -52,6 +57,15 @@ export function ConfigurationFormPageContainer() {
     autoSaveEnabled: false,
     autoSaveIntervalMs: 30000
   });
+  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [conditionDraft, setConditionDraft] = useState<ConditionDraft>({
+    name: 'Take Profit',
+    action: 'SELL',
+    metric: 'positionProfitPercent',
+    operator: 'GREATER_OR_EQUAL',
+    value: 0.5,
+    base: ''
+  });
   const [exportedJson, setExportedJson] = useState('');
   const selectedTradingMarket = quoteSources.find((source) => source.key === tradingMarket);
   const profitCurrency = selectedTradingMarket ? getProfitCurrency(selectedTradingMarket.parsed) : '';
@@ -77,8 +91,18 @@ export function ConfigurationFormPageContainer() {
   }
 
   function handleExportJson() {
+    setExportedJson(serializeBotConfiguration(buildConfiguration()));
+  }
+
+  function handleSaveConfiguration() {
+    dispatch(configurationSaved(buildConfiguration()));
+    navigate('/');
+  }
+
+  function buildConfiguration() {
     const now = new Date().toISOString();
-    const configuration = buildBotConfiguration({
+
+    return buildBotConfiguration({
       id: 'draft-configuration',
       name,
       selectedSources,
@@ -95,17 +119,38 @@ export function ConfigurationFormPageContainer() {
       },
       demoSettings,
       advancedSettings,
+      conditions,
       createdAt: now,
       updatedAt: now
     });
+  }
 
-    setExportedJson(serializeBotConfiguration(configuration));
+  function handleAddCondition() {
+    setConditions((currentConditions) => [
+      ...currentConditions,
+      {
+        id: `condition-${currentConditions.length + 1}`,
+        name: conditionDraft.name,
+        enabled: true,
+        action: conditionDraft.action,
+        priority: currentConditions.length + 1,
+        when: {
+          metric: conditionDraft.metric,
+          operator: conditionDraft.operator,
+          value: conditionDraft.value,
+          base: conditionDraft.base || undefined
+        }
+      }
+    ]);
+    setExportedJson('');
   }
 
   return (
     <ConfigurationFormShell
       advancedSettings={advancedSettings}
       buySettings={{ ...buySettings, buyCurrency: profitCurrency }}
+      conditionDraft={conditionDraft}
+      conditions={conditions}
       demoSettings={demoSettings}
       exportedJson={exportedJson}
       latestValues={latestValues}
@@ -119,10 +164,13 @@ export function ConfigurationFormPageContainer() {
       tradingMarket={tradingMarket}
       weightedAverage={weightedAverage}
       onAdvancedSettingsChange={setAdvancedSettings}
+      onAddCondition={handleAddCondition}
       onBuySettingsChange={setBuySettings}
+      onConditionDraftChange={setConditionDraft}
       onDemoSettingsChange={setDemoSettings}
       onExportJson={handleExportJson}
       onNameChange={setName}
+      onSaveConfiguration={handleSaveConfiguration}
       onSellSettingsChange={setSellSettings}
       onSourcesChange={handleSourcesChange}
       onTradingMarketChange={setTradingMarket}

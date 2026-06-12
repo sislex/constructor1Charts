@@ -2,6 +2,7 @@ import type {
   AdvancedSettings,
   BotConfiguration,
   BuySettings,
+  Condition,
   DemoSettings,
   SellSettings,
   WeightedAverageConfig
@@ -18,6 +19,7 @@ export interface BuildConfigurationInput {
   sellSettings: SellSettings;
   demoSettings: DemoSettings;
   advancedSettings: AdvancedSettings;
+  conditions: Condition[];
   createdAt: string;
   updatedAt: string;
 }
@@ -33,7 +35,7 @@ export function buildBotConfiguration(input: BuildConfigurationInput): BotConfig
     tradingMarket: input.tradingMarket,
     profitCurrency: input.profitCurrency,
     weightedAverage: input.weightedAverage,
-    conditions: [],
+    conditions: input.conditions,
     conditionGroups: [],
     demoSettings: input.demoSettings,
     advancedSettings: input.advancedSettings,

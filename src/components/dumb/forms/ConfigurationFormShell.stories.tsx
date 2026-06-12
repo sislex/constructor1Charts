@@ -46,6 +46,15 @@ const meta = {
       autoSaveEnabled: false,
       autoSaveIntervalMs: 30000
     },
+    conditions: [],
+    conditionDraft: {
+      name: 'Take Profit',
+      action: 'SELL',
+      metric: 'positionProfitPercent',
+      operator: 'GREATER_OR_EQUAL',
+      value: 0.5,
+      base: ''
+    },
     latestValues: {},
     exportedJson: '',
     onNameChange: () => undefined,
@@ -56,6 +65,9 @@ const meta = {
     onSellSettingsChange: () => undefined,
     onDemoSettingsChange: () => undefined,
     onAdvancedSettingsChange: () => undefined,
+    onConditionDraftChange: () => undefined,
+    onAddCondition: () => undefined,
+    onSaveConfiguration: () => undefined,
     onExportJson: () => undefined
   }
 } satisfies Meta<typeof ConfigurationFormShell>;

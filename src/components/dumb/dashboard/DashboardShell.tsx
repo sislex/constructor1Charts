@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@components/dumb/common/Button';
+import type { BotConfiguration } from '@domainTypes/domain';
 import type { AppTheme } from '@store/slices/settingsSlice';
 import './DashboardShell.css';
 
 export interface DashboardShellProps {
   theme: AppTheme;
+  configurations: BotConfiguration[];
   configurationCount: number;
   quoteSourceCount: number;
   onThemeToggle: () => void;
@@ -12,6 +14,7 @@ export interface DashboardShellProps {
 
 export function DashboardShell({
   theme,
+  configurations,
   configurationCount,
   quoteSourceCount,
   onThemeToggle
@@ -49,10 +52,26 @@ export function DashboardShell({
       </section>
 
       <section className="dashboard-shell__workspace">
-        <div className="dashboard-shell__empty">
-          <h2>No configurations yet</h2>
-          <p>Create the first bot configuration to select quote sources, set weighted average rules and test demo trading flows.</p>
-        </div>
+        {configurations.length === 0 ? (
+          <div className="dashboard-shell__empty">
+            <h2>No configurations yet</h2>
+            <p>Create the first bot configuration to select quote sources, set weighted average rules and test demo trading flows.</p>
+          </div>
+        ) : (
+          <div className="dashboard-shell__list" aria-label="Saved configurations">
+            {configurations.map((configuration) => (
+              <article className="dashboard-shell__config-row" key={configuration.id}>
+                <div>
+                  <h2>{configuration.name}</h2>
+                  <p>{configuration.tradingMarket}</p>
+                </div>
+                <span>{configuration.selectedSources.length} sources</span>
+                <span>{configuration.profitCurrency}</span>
+                <span>{configuration.conditions.length} conditions</span>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
