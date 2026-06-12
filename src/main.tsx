@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from '@app/App';
+import { ConfigurationsPersistence } from '@app/providers/ConfigurationsPersistence';
 import { ThemeProvider } from '@app/providers/ThemeProvider';
 import { store } from '@store/store';
 import '@app/styles/theme.css';
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Provider store={store}>
       <BrowserRouter>
         <ThemeProvider>
-          <App />
+          <ConfigurationsPersistence>
+            <App />
+          </ConfigurationsPersistence>
         </ThemeProvider>
       </BrowserRouter>
     </Provider>

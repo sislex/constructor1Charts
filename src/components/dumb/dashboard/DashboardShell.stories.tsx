@@ -17,6 +17,10 @@ const meta = {
     configurations: [],
     configurationCount: 0,
     quoteSourceCount: 0,
+    exportedJson: '',
+    onDuplicateConfiguration: () => undefined,
+    onDeleteConfiguration: () => undefined,
+    onExportConfiguration: () => undefined,
     onThemeToggle: () => undefined
   }
 } satisfies Meta<typeof DashboardShell>;

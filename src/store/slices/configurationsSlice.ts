@@ -41,6 +41,25 @@ export const configurationsSlice = createSlice({
 
       state.items.push(action.payload);
     },
+    configurationDeleted(state, action: PayloadAction<string>) {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    configurationDuplicated(state, action: PayloadAction<{ id: string; newId: string; createdAt: string }>) {
+      const source = state.items.find((item) => item.id === action.payload.id);
+
+      if (!source) {
+        return;
+      }
+
+      state.items.push({
+        ...source,
+        id: action.payload.newId,
+        name: `${source.name} Copy`,
+        createdAt: action.payload.createdAt,
+        updatedAt: action.payload.createdAt,
+        status: 'draft'
+      });
+    },
     setConfigurationsSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
     }
@@ -52,5 +71,7 @@ export const {
   loadConfigurationsSucceeded,
   loadConfigurationsFailed,
   configurationSaved,
+  configurationDeleted,
+  configurationDuplicated,
   setConfigurationsSearch
 } = configurationsSlice.actions;

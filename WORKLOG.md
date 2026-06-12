@@ -4,6 +4,49 @@
 
 ## 2026-06-12
 
+### Configuration persistence and dashboard actions
+
+Status: completed
+
+Что сделано:
+- Добавлен `configurationsStorage` service для чтения/записи конфигураций в `localStorage`.
+- Добавлен `ConfigurationsPersistence` provider: hydrate конфигураций при старте приложения и auto-write при изменениях.
+- Save configuration теперь сохраняется между перезагрузками страницы.
+- Исправлен id для новых конфигураций: вместо постоянного `draft-configuration` теперь создается уникальный `configuration-${Date.now()}`.
+- В `configurationsSlice` добавлены `configurationDeleted` и `configurationDuplicated`.
+- Dashboard получил действия `Export JSON`, `Duplicate`, `Delete`.
+- Dashboard показывает JSON export preview для выбранной конфигурации.
+- Добавлены unit/component/e2e tests для persistence и dashboard actions.
+
+Измененные файлы:
+- `src/services/storage/configurationsStorage.ts`
+- `src/services/storage/configurationsStorage.test.ts`
+- `src/app/providers/ConfigurationsPersistence.tsx`
+- `src/main.tsx`
+- `src/store/slices/configurationsSlice.ts`
+- `src/store/slices/configurationsSlice.test.ts`
+- `src/components/dumb/dashboard/DashboardShell.tsx`
+- `src/components/dumb/dashboard/DashboardShell.css`
+- `src/components/dumb/dashboard/DashboardShell.stories.tsx`
+- `src/components/dumb/dashboard/DashboardShell.test.tsx`
+- `src/containers/DashboardPageContainer.tsx`
+- `src/containers/ConfigurationFormPageContainer.tsx`
+- `src/app/App.test.tsx`
+- `e2e/smoke.spec.ts`
+- `WORKLOG.md`
+
+Тесты и проверки:
+- `npm run lint` - passed.
+- `npm run typecheck` - passed.
+- `npm test` - passed, 64 tests.
+- `npm run build` - passed.
+- `npm run test:e2e` - passed, 2 Playwright tests.
+
+Риски:
+- Persistence пока local-only через `localStorage`; backend save все еще не реализован.
+- Delete выполняется сразу без confirmation dialog.
+- Edit action пока не реализован.
+
 ### Save configuration hotfix
 
 Status: completed

@@ -113,7 +113,7 @@
 
 .dashboard-shell__config-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 120px 120px 140px;
+  grid-template-columns: minmax(0, 1fr) 110px 90px 110px auto;
   align-items: center;
   gap: 12px;
   border: 1px solid var(--color-border);
@@ -138,4 +138,29 @@
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.dashboard-shell__row-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.dashboard-shell__row-actions .button {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.dashboard-shell__export {
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin: 6px 0 0;
+  padding: 14px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 12px;
+  line-height: 1.6;
 }

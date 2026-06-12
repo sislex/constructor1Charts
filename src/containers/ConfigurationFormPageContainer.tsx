@@ -103,7 +103,7 @@ export function ConfigurationFormPageContainer() {
     const now = new Date().toISOString();
 
     return buildBotConfiguration({
-      id: 'draft-configuration',
+      id: createConfigurationId(),
       name,
       selectedSources,
       tradingMarket,
@@ -177,4 +177,8 @@ export function ConfigurationFormPageContainer() {
       onWeightedAverageChange={setWeightedAverage}
     />
   );
+}
+
+function createConfigurationId(): string {
+  return `configuration-${Date.now()}`;
 }

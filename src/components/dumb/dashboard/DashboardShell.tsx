@@ -10,6 +10,10 @@ export interface DashboardShellProps {
   configurationCount: number;
   quoteSourceCount: number;
   onThemeToggle: () => void;
+  onDuplicateConfiguration: (id: string) => void;
+  onDeleteConfiguration: (id: string) => void;
+  onExportConfiguration: (id: string) => void;
+  exportedJson: string;
 }
 
 export function DashboardShell({
@@ -17,7 +21,11 @@ export function DashboardShell({
   configurations,
   configurationCount,
   quoteSourceCount,
-  onThemeToggle
+  onThemeToggle,
+  onDuplicateConfiguration,
+  onDeleteConfiguration,
+  onExportConfiguration,
+  exportedJson
 }: DashboardShellProps) {
   return (
     <main className="dashboard-shell">
@@ -68,8 +76,18 @@ export function DashboardShell({
                 <span>{configuration.selectedSources.length} sources</span>
                 <span>{configuration.profitCurrency}</span>
                 <span>{configuration.conditions.length} conditions</span>
+                <div className="dashboard-shell__row-actions">
+                  <Button onClick={() => onExportConfiguration(configuration.id)}>Export JSON</Button>
+                  <Button onClick={() => onDuplicateConfiguration(configuration.id)}>Duplicate</Button>
+                  <Button onClick={() => onDeleteConfiguration(configuration.id)}>Delete</Button>
+                </div>
               </article>
             ))}
+            {exportedJson ? (
+              <pre className="dashboard-shell__export" aria-label="Dashboard exported JSON">
+                {exportedJson}
+              </pre>
+            ) : null}
           </div>
         )}
       </section>

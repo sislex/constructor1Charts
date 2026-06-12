@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 
 test('opens dashboard shell on desktop viewport', async ({ page }) => {
   await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
 
   await expect(page.getByRole('heading', { name: 'Bot Configurations' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Toggle color theme' })).toBeVisible();
@@ -9,6 +11,8 @@ test('opens dashboard shell on desktop viewport', async ({ page }) => {
 
 test('opens create configuration form and selects quote source', async ({ page }) => {
   await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
 
   await page.getByRole('link', { name: 'Create Configuration' }).click();
   await expect(page.getByRole('heading', { name: 'Create Configuration' })).toBeVisible();
@@ -39,4 +43,16 @@ test('opens create configuration form and selects quote source', async ({ page }
 
   await expect(page.getByRole('heading', { name: 'Bot Configurations' })).toBeVisible();
   await expect(page.getByText('ETH Arbitrage Bot')).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByText('ETH Arbitrage Bot')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Export JSON' }).click();
+  await expect(page.getByLabel('Dashboard exported JSON')).toContainText('"name": "ETH Arbitrage Bot"');
+
+  await page.getByRole('button', { name: 'Duplicate' }).click();
+  await expect(page.getByText('ETH Arbitrage Bot Copy')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Delete' }).first().click();
+  await expect(page.getByText('ETH Arbitrage Bot Copy')).toBeVisible();
 });
