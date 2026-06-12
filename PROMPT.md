@@ -209,6 +209,10 @@ UI Style
 Использовать:
 
 * темную тему;
+* светлую тему;
+* переключение темы Dark / Light через настройки приложения;
+* сохранение выбранной темы между сессиями;
+* theme tokens / CSS variables для цветов, borders, shadows, chart palette и semantic states;
 * cards;
 * muted colors;
 * cyan / blue accent color;
